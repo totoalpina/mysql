@@ -1,0 +1,24 @@
+<div class="container p-6 my-6 " >
+    <ul class="nav justify-content-around">
+
+      <li class="nav-item">
+        <a id="nav-btn" style="color: ghostwhite" class="nav-link active" href="{{ url_for('home') }}">Home</a>
+      </li>
+
+      <li class="nav-item">
+        <a id="nav-btn" style="color: ghostwhite" class="nav-link" href="{{ url_for('logare') }}">Intra in cont</a>
+      </li>
+
+      <li class="nav-item">
+        <a id="nav-btn" style="color: ghostwhite" class="nav-link" href="{{url_for('logout')}}">Inchide sesiune</a>
+      </li>
+      <li class="nav-item">
+        <a id="nav-btn" style="color: ghostwhite" class="nav-link" href="{{url_for('administrare')}}">Admin</a>
+{#        <button type="button" class="btn btn-success btn-sm pull-right float-right" style="background-color: #444444; color: lightgray; margin: 5px" data-toggle="modal" data-target="#Modaladmin">Admin</button>#}
+
+      </li>
+    </ul>
+</div>
+<div id="poza_nav" class="col md-12" style="height: 60px">
+    <img src="{{ url_for('static', filename='img/picaturi de apa.jpg') }}" class="img-fluid" style="width: 100%; height: 5px" alt="Responsive image">
+</div>

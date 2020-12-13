@@ -1,0 +1,102 @@
+{% extends "sablon.html" %}
+{% block title %}Logare{% endblock %}
+{% block content %}
+<div class="container" style="width: 45%">
+    <div class="row">
+            <div class="col md-12 " >
+                    <h1 style="background-color: #444444; color: lightgray"> </h1>
+                <h8 style="background-color: #444444; color: lightgray">
+                    <p>Pentru a putea intra in aplicatie va rugam sa introduceti UTILIZATOR si PAROLA !</p>
+                    <p style="background-color: #444444; color: lightgray">In cazul in care nu aveti cont, va invitam sa va creati unul, prin apasarea butonului "Creaza cont"</p>
+                </h8>
+                    <div class="col md-12 ">
+
+                        <h1 style="background-color: #444444; color: lightgray"> </h1>
+                    </div>
+
+                    {%with messages = get_flashed_messages()%}
+                        {%if messages%}
+                            {% for message in messages %}
+                                <div class="alert alert-danger alert-dismissable d-flex justify-content-around" style="width: 70%" role="alert">
+                                        <div class="justify-content-around">
+                                            {{message}}
+                                        </div>
+                                        <div class="justify-content-around">
+                                             <button type="button" class="close float-right" data-dismiss="alert" aria-label ="close">
+                                                 <span aria-hidden="true" class="float-right">&times;</span>
+                                             </button>
+                                        </div>
+
+                                </div>
+                            {%endfor%}
+                        {%endif%}
+                    {%endwith%}
+
+                             <form action="{{ url_for('logare') }}" method="POST" style="background-color: #444444; color: lightgray">
+                               <div class="form-group" style="background-color: #444444; color: lightgray">
+                                  <label style="background-color: #444444; color: lightgray">Utilizator :</label>
+                                  <input type="text" style="background-color: #555555; color: lightgray; width: 70%" class="form-control border-success" name="utilizator" required="1">
+                               </div>
+                               <div class="form-group" style="background-color: #444444; color: lightgray">
+                                  <label style="background-color: #444444; color: lightgray">Parola :</label>
+                                  <input type="password" class="form-control border-success" style="background-color: #555555; color: lightgray; width: 70%" name="parola" required="1">
+                               </div>
+
+                               <div class="form-group d-flex justify-content-around" style="background-color: #444444; color: lightgray">
+                                  <button class="btn btn-success float-left" style="background-color: #444444; color: lightgray" type="sbumit">Intra in cont</button>
+                                  <button class="btn btn-warning d-flex float-right" style="background-color: #444444; color: lightgray" type="sbumit" data-toggle="modal" data-target="#myModalcont">Creaza cont nou</button>
+                               </div>
+                             </form>
+            </div>
+    {#    incepe modal ADAUGA CONT#}
+            <div id="myModalcont" style="background-color: #444444; color: lightgray" class="modal fade" role="dialog">
+                   <div class="modal-dialog" style="background-color: #444444; color: lightgray">
+                          <div class="modal-content" style="background-color: #444444; color: lightgray">
+                                <div class="modal-header" style="background-color: #444444; color: lightgray">
+                                    <h4 class="modal-title" style="background-color: #444444; color: lightgray">Introduceti informatiile</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="background-color: #444444; color: lightgray">&times;</button>
+                                </div>
+                                <div class="modal-body" style="background-color: #444444; color: lightgray">
+                                    <form action="   {{ url_for('cont_nou') }} " method="POST" style="background-color: #444444; color: lightgray">
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Nume :</label>
+                                              <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="nume" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Prenume :</label>
+                                              <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="prenume" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Utilizator :</label>
+                                              <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="utilizator" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Parola :</label>
+                                              <input type="password" class="form-control" style="background-color: #555555; color: lightgray" name="parola" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Confirmati parola :</label>
+                                              <input type="password" style="background-color: #555555; color: lightgray" class="form-control" name="confirma_parola" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <label style="background-color: #444444; color: lightgray">Adresa de e-mail :</label>
+                                              <input type="email" style="background-color: #555555; color: lightgray" class="form-control" name="email" required="1">
+                                        </div>
+                                        <div class="form-group" style="background-color: #444444; color: lightgray">
+                                              <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="submit">Inregistreaza cont</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #444444; color: lightgray">Inchide</button>
+                                </div>
+                          </div>
+                   </div>
+            </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
