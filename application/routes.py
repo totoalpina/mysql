@@ -19,16 +19,13 @@ def logare():
         f_parola = request.form['parola']
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM user.login WHERE utilizator=%s", (f_utilizator,))
-        cont=cur.fetchone()                 # selectrez utilizatorul
-        # print('nbvc -' + str(cont))
-
+        cont=cur.fetchone()                                                 # selectrez utilizatorul
         if cont:
             if check_password_hash(cont['parola'], f_parola):
                 flash('Bine ai venit ' + cont['utilizator'])
                 session['utilizator'] = cont['utilizator']                    # stabilesc informatiile din sesiune, ma ajuta mai tarziu sa controlez accesul in paginile site-ului
                 session['activ'] = cont['activ']
                 session['id'] = cont['id']
-                # print('hgsf -' + str(session))
                 return redirect(url_for('index'))
             # elif check_password_hash(cont['parola'], f_parola) and cont['activ'] == 2:
             #     flash('Bine ai venit COSMIN')
@@ -39,7 +36,6 @@ def logare():
             #     return redirect(url_for('administrare'))
         else:
              flash("Utilizator si parola incorecte . Incercati din nou")
-
     return render_template('logare.html')
 
 
@@ -49,7 +45,7 @@ def cont_nou():
         nume = request.form['nume']
         prenume = request.form['prenume']
         utilizator = request.form['utilizator']
-        # print('hhhh - ' + utilizator)      #verific ce informatii imi aduce
+        # print('hhhh - ' + utilizator)                      #verific ce informatii imi aduce
         parola = request.form['parola']
         confirma_parola = request.form['confirma_parola']
         email = request.form['email']
@@ -124,7 +120,7 @@ def cautare():
     if 'utilizator' in session:                             # verific daca utilizatoru este logat, in caz ca nu il redirectionez la pagina principala - ma folosesc de sesiune pentru a nu putea fi accesata decat daca userul este logat
         logare = True
         v_cauta = '%' + request.form.get('cauta') + '%'
-        # print('vpmc 11 - ' + v_cauta)                # verific daca datele din camp sunt in forma corect
+        # print('vpmc 11 - ' + v_cauta)                     # verific daca datele din camp sunt in forma corect
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM cosmin.parole WHERE nume_domeniu LIKE %s OR utilizator LIKE %s OR parola LIKE %s OR descriere LIKE %s ORDER BY id", (v_cauta, v_cauta, v_cauta, v_cauta,))
         mysql.connection.commit()
@@ -135,7 +131,7 @@ def cautare():
         return redirect(url_for('logare'))
 
 @app.route('/adauga', methods = ['POST'])                   # functia de adaugare de date noi in baza de date
-def adauga():                                        # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
+def adauga():                                               # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
     if request.method == "POST":
         nume_domeniu = request.form['nume_domeniu']
         utilizator = request.form['utilizator']
@@ -267,7 +263,7 @@ def userdelete(id_data):                                            # nu am nevo
 
 @app.route('/logout')
 def logout():
-    session.pop('utilizator', None) # inchid sesiunea si sterg datele de cookie legate de aceasta
+    session.pop('utilizator', None)                         # inchid sesiunea si sterg datele de cookie legate de aceasta
     return redirect(url_for('home'))
 
 
