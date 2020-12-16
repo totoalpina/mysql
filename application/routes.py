@@ -4,7 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import MySQLdb.cursors
 
+
 # FOLOSESC BAZE DE DATE SEPARATE PENTRU UTILIZATORI SI PENTRU DATE
+
+
 
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
@@ -26,6 +29,7 @@ def logare():
                 session['utilizator'] = cont['utilizator']                    # stabilesc informatiile din sesiune, ma ajuta mai tarziu sa controlez accesul in paginile site-ului
                 session['activ'] = cont['activ']
                 session['id'] = cont['id']
+                session.permanent = True
                 return redirect(url_for('index'))
             # elif check_password_hash(cont['parola'], f_parola) and cont['activ'] == 2:
             #     flash('Bine ai venit COSMIN')
