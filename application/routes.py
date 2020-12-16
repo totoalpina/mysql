@@ -99,6 +99,22 @@ def index():
         return render_template('index.html', parole=data)               # parole=data arunca in formularul din html informatiile din query
     else:
         return redirect(url_for('logare'))
+
+@app.route('/linkuri', methods=['GET', 'POST'])      # routina pentru linkuri
+def linkuri():
+    logare = False
+    if 'utilizator' in session:                             # verific daca in sesiune a fost salvat utilizatorul la logare
+        logare = True
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM cosmin.linkuri ORDER BY id")
+        linkuri = cur.fetchall()
+        cur.close()
+        # print(data)                                       # VERIFIC DATELE AFISATE DUPA INTEROGARE
+        return render_template('linkuri.html', linkuri=linkuri)               # parole=data arunca in formularul din html informatiile din query
+    else:
+        return redirect(url_for('logare'))
+
+
 @app.route('/administrare', methods=['GET', 'POST'])
 def administrare():
     logare = False
@@ -114,7 +130,7 @@ def administrare():
         flash('Aceasta sectiune este dedicata strict administratorilor !!!')
         return redirect(url_for('logare'))
 
-@app.route('/cautare', methods=['GET', 'POST'])                         # functia de CAUTARE si randare pagina
+@app.route('/cautare', methods=['GET', 'POST'])                         # functia de CAUTARE si randare pagina -  tabel PAROLE
 def cautare():
     logare = False
     if 'utilizator' in session:                             # verific daca utilizatoru este logat, in caz ca nu il redirectionez la pagina principala - ma folosesc de sesiune pentru a nu putea fi accesata decat daca userul este logat
@@ -127,6 +143,22 @@ def cautare():
         data = cur.fetchall()
         # print('vpmc 12 - ' + str(data))               #   verific datele afisate in urma filtrului
         return render_template("cautare.html", data=data)
+    else:
+        return redirect(url_for('logare'))
+
+@app.route('/cautare_linkuri', methods=['GET', 'POST'])                         # functia de CAUTARE si randare pagina -  tabel LINKURI
+def cautare_linkuri():
+    logare = False
+    if 'utilizator' in session:                             # verific daca utilizatoru este logat, in caz ca nu il redirectionez la pagina principala - ma folosesc de sesiune pentru a nu putea fi accesata decat daca userul este logat
+        logare = True
+        v_cauta = '%' + request.form.get('cauta') + '%'
+        # print('vpmc 11 - ' + v_cauta)                     # verific daca datele din camp sunt in forma corect
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM cosmin.linkuri WHERE topic LIKE %s OR link LIKE %s OR descriere LIKE %s ORDER BY id", (v_cauta, v_cauta, v_cauta,))
+        mysql.connection.commit()
+        search_links = cur.fetchall()
+        # print('vpmc 12 - ' + str(data))               #   verific datele afisate in urma filtrului
+        return render_template("cautare_linkuri.html", data=search_links)
     else:
         return redirect(url_for('logare'))
 
@@ -148,6 +180,22 @@ def adauga():                                               # nu am nevoie de ve
         flash("Inregistrare reusita. Datele au fost adaugate !")
         return redirect(url_for('index'))
 
+@app.route('/adaugalink', methods = ['POST'])                   # functia de adaugare de date noi in baza de date
+def adaugalink():                                               # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
+    if request.method == "POST":
+        topic = request.form['topic']
+        link = request.form['link']
+        descriere = request.form['descriere']
+        data_modificare = datetime.now()
+        data_adaugare = datetime.now()
+        sql = "INSERT INTO cosmin.linkuri (topic, link, descriere, data_modificare, data_adaugare) VALUES (%s, %s, %s, %s,%s)"
+        args = [topic, link, descriere, data_modificare, data_adaugare]
+        cur = mysql.connection.cursor()
+        cur.execute(sql, args)
+        mysql.connection.commit()
+        cur.close()
+        flash("Inregistrare reusita. Datele au fost adaugate !")
+        return redirect(url_for('linkuri'))
 
 @app.route('/adminedit', methods=['GET','POST'])                 # functia pentru editarea datelor
 def adminedit():                                                 # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
@@ -228,6 +276,38 @@ def editeaza():                                                  # nu am nevoie 
         cur.close()
         return redirect(url_for('index'))
 
+@app.route('/editeazalink', methods=['GET','POST'])                 # functia pentru editarea datelor
+def editeazalink():                                                  # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
+    if request.method == 'POST':
+        id_link = request.form['id']
+        topic = request.form['topic']
+        link = request.form['link']
+        descriere = request.form['descriere']
+        mod_data = datetime.now()                               # stabilesc data si ora pentru a introduce in baza de date cand a fost modificata informatia
+        cur = mysql.connection.cursor()
+        cur.execute("""
+                       UPDATE 
+                       cosmin.linkuri
+                       SET 
+                            topic=%s, 
+                            link=%s, 
+                            descriere=%s,
+                            data_modificare=%s
+                       WHERE 
+                            id=%s
+                    """,
+                    (
+                     topic,
+                     link,
+                     descriere,
+                     mod_data,
+                     id_link,
+                     )
+                    )
+        flash("Inregistrare editata cu succes")
+        mysql.connection.commit()
+        cur.close()
+        return redirect(url_for('linkuri'))
 
 @app.route('/delete/<int:id_data>', methods=['GET', 'POST'])   # functia de stergere a datelor din baza de date
 def delete(id_data):                                            # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
@@ -259,6 +339,21 @@ def userdelete(id_data):                                            # nu am nevo
         mysql.connection.commit()
         cur.close()
         return redirect(url_for('administrare'))
+
+@app.route('/deletelink/<int:id_data>', methods=['GET', 'POST'])   # functia de stergere a datelor din baza de date
+def deletelink(id_data):                                            # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
+    flash("Stergerea a fost realizata cu succes !")
+    sql = """DELETE FROM 
+                    cosmin.linkuri 
+             WHERE 
+                    id=%s
+          """
+    args = [id_data]
+    cur = mysql.connection.cursor()
+    cur.execute(sql, args)
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('linkuri'))
 
 
 @app.route('/logout')

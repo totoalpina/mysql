@@ -1,5 +1,5 @@
 {% extends "sablon.html" %}
-{% block title %}Afisare date{% endblock %}
+{% block title %}Afisare linkuri{% endblock %}
 
 <link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
 {% block content %}
@@ -12,7 +12,7 @@
                     <div class="d-flex justify-content-between" style="background-color: #444444; color: lightgray">
                             <h4 style="background-color: #444444; color: lightgray"> Lista de informatii </h4>
                                     <div style="background-color: #444444; color: lightgray">
-                                            <form action="{{ url_for('cautare') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
+                                            <form action="{{ url_for('cautare_linkuri') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
                                                     <input class="form-control mr-sm-2" style="background-color: #444444; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
                                                     <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: #444444; color: lightgray" type="submit" >Cauta</button>
                                             </form>
@@ -47,14 +47,14 @@
                         <thead>
                             <tr>
 {#                                <th scope="col" style="text-align: center" t>id</th>#}
-                                <th scope="col" style="text-align: center">Nume Domeniu</th>
-                                <th scope="col" style="text-align: center">Utilizator</th>
+                                <th scope="col" style="text-align: center">Topic</th>
+                                <th scope="col" style="text-align: center">link</th>
 {#                                <th scope="col" style="text-align: center">Parola</th>#}
 {#                                <th scope="col" style="text-align: center">Descriere</th>#}
                                 <th scope="col" style="text-align: center" width="200px">Actiune</th>
                             </tr>
                         </thead>
-                        {% for row in parole %}
+                        {% for row in linkuri %}
                         <tbody>
 {#                                <td scope='row'>{{ row.0 }}</td>#}
                                 <td scope='row'>{{ row.1 }}</td>
@@ -63,36 +63,32 @@
 {#                                <td scope='row'>{{ row.4 }}</td>#}
                                 <td scope='row'>
                                     <div class="d-flex justify-content-center">
-                                            <a href="/editeaza/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaledit{{row.0}}" >Editare / Vizualizare</a>
-                                            <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>
+                                            <a href="/editeazalink/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaleditlink{{row.0}}" >Editare / Vizualizare</a>
+                                            <a href="/deletelink/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>
                                     </div>
 
                                 </td>
                 {# Modal EDITEAZA #}
-                                         <div id="modaledit{{ row.0 }}" class="modal fade" style="background-color: #444444; color: lightgray" role="dialog">
+                                         <div id="modaleditlink{{ row.0 }}" class="modal fade" style="background-color: #444444; color: lightgray" role="dialog">
                                            <div class="modal-dialog" style="background-color: #444444; color: lightgray">
                                               <div class="modal-content" style="background-color: #444444; color: lightgray">
                                                  <div class="modal-header" style="background-color: #444444; color: lightgray">
                                                      <h4 class="modal-title">Editeaza</h4>
                                                  </div>
                                                  <div class="modal-body" style="background-color: #444444; color: lightgray">
-                                                    <form action="{{ url_for('editeaza') }}" method="POST" style="background-color: #444444; color: lightgray">
+                                                    <form action="{{ url_for('editeazalink') }}" method="POST" style="background-color: #444444; color: lightgray">
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
-                                                          <label style="background-color: #444444; color: lightgray">Nume Domeniu :</label>
+                                                          <label style="background-color: #444444; color: lightgray">Topic :</label>
                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="id" value="{{ row.0 }}">
-                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="nume_domeniu" value="{{ row.1 }}">
+                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="topic" value="{{ row.1 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
-                                                          <label style="background-color: #444444; color: lightgray">Utilizator :</label>
-                                                          <input type="text" class="form-control" style="background-color: #555555; color: lightgray" name="utilizator" value="{{ row.2 }}">
+                                                          <label style="background-color: #444444; color: lightgray">Link :</label>
+                                                          <input type="text" class="form-control" style="background-color: #555555; color: lightgray" name="link" value="{{ row.2 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
-                                                          <label>Parola :</label>
-                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="parola" value="{{ row.3 }}">
-                                                       </div>
-                                                       <div class="form-group" style="background-color: #444444; color: lightgray">
-                                                          <label style="background-color: #444444; color: lightgray">Descriere :</label>
-                                                          <input type="textarea" style="background-color: #555555; color: lightgray" class="form-control" rows="3" name="descriere" value="{{ row.4 }}">
+                                                          <label>Descriere :</label>
+                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="descriere" value="{{ row.3 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                                           <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="sbumit">Salveaza modificarile</button>
@@ -118,22 +114,18 @@
                                     <h4 class="modal-title" style="background-color: #444444; color: lightgray">Introduceti informatiile</h4>
                                 </div>
                                 <div class="modal-body" style="background-color: #444444; color: lightgray">
-                                    <form action=" {{ url_for('adauga') }}" method="POST" style="background-color: #444444; color: lightgray">
+                                    <form action=" {{ url_for('adaugalink') }}" method="POST" style="background-color: #444444; color: lightgray">
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
-                                              <label style="background-color: #444444; color: lightgray">Nume Domeniu :</label>
-                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="nume_domeniu" required="1">
+                                              <label style="background-color: #444444; color: lightgray">Topic :</label>
+                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="topic" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
-                                              <label style="background-color: #444444; color: lightgray">Utilizator :</label>
-                                              <input type="text" class="form-control" style="background-color: #444444; color: lightgray" name="utilizator" required="1">
-                                       </div>
-                                       <div class="form-group" style="background-color: #444444; color: lightgray">
-                                              <label style="background-color: #444444; color: lightgray">Parola :</label>
-                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="parola" required="1">
+                                              <label style="background-color: #444444; color: lightgray">Link :</label>
+                                              <input type="text" class="form-control" style="background-color: #444444; color: lightgray" name="link" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <label style="background-color: #444444; color: lightgray">Descriere :</label>
-                                              <input type="textarea" style="background-color: #444444; color: lightgray" class="form-control" rows="3" name="descriere" required="1">
+                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="descriere" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="submit">Inregistreaza</button>
