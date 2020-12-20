@@ -10,7 +10,7 @@
                 <h1 style="background-color: #444444; color: lightgray"> </h1>
                 <h1 style="background-color: #444444; color: lightgray"> </h1>
                     <div class="d-flex justify-content-between" style="background-color: #444444; color: lightgray">
-                            <h4 style="background-color: #444444; color: lightgray"> Lista de informatii </h4>
+                            <h4 style="background-color: #444444; color: lightgray; margin-left: 10px"> Lista de informatii </h4>
                                     <div style="background-color: #444444; color: lightgray">
                                             <form action="{{ url_for('cautare_linkuri') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
                                                     <input class="form-control mr-sm-2" style="background-color: #444444; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
@@ -80,15 +80,15 @@
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                                           <label style="background-color: #444444; color: lightgray">Topic :</label>
                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="id" value="{{ row.0 }}">
-                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="topic" value="{{ row.1 }}">
+                                                          <input type="text" style="background-color: #ccc5b9; color: black" class="form-control" name="topic" value="{{ row.1 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                                           <label style="background-color: #444444; color: lightgray">Link :</label>
-                                                          <input type="text" class="form-control" style="background-color: #555555; color: lightgray" name="link" value="{{ row.2 }}">
+                                                          <input type="text" class="form-control" style="background-color: #ccc5b9; color: black" name="link" value="{{ row.2 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                                           <label>Descriere :</label>
-                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="descriere" value="{{ row.3 }}">
+                                                          <input type="text" style="background-color: #ccc5b9; color: black" class="form-control" name="descriere" value="{{ row.3 }}">
                                                        </div>
                                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                                           <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="sbumit">Salveaza modificarile</button>
@@ -117,15 +117,15 @@
                                     <form action=" {{ url_for('adaugalink') }}" method="POST" style="background-color: #444444; color: lightgray">
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <label style="background-color: #444444; color: lightgray">Topic :</label>
-                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="topic" required="1">
+                                              <input type="text" style="background-color: #ccc5b9; color: black" class="form-control" name="topic" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <label style="background-color: #444444; color: lightgray">Link :</label>
-                                              <input type="text" class="form-control" style="background-color: #444444; color: lightgray" name="link" required="1">
+                                              <input type="text" class="form-control" style="background-color: #ccc5b9; color: black" name="link" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <label style="background-color: #444444; color: lightgray">Descriere :</label>
-                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="descriere" required="1">
+                                              <input type="text" style="background-color: #ccc5b9; color: black" class="form-control" name="descriere" required="1">
                                        </div>
                                        <div class="form-group" style="background-color: #444444; color: lightgray">
                                               <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="submit">Inregistreaza</button>

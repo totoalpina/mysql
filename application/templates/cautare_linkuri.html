@@ -37,9 +37,9 @@
                                              </div>
 
                                              <div class="modal-body" style="background-color: #444444; color: lightgray">
-                                                <form action="{{ url_for('editeaza') }}" method="POST" style="background-color: #444444; color: lightgray">
+                                                <form action="{{ url_for('editeazalink') }}" method="POST" style="background-color: #444444; color: lightgray">
                                                    <div class="form-group" style="background-color: #444444; color: lightgray">
-                                                      <label style="background-color: #; color: lightgray">Topic :</label>
+                                                      <label style="background-color: #444444; color: lightgray">Topic :</label>
                                                       <input type="hidden" style="background-color: #444444; color: lightgray" name="id" value="{{ row.0 }}">
                                                       <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="topic" value="{{ row.1 }}">
                                                    </div>
