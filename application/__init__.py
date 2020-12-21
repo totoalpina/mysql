@@ -11,6 +11,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 app.config['SESSION_REFRESH_EACH_REQUEST'] = True
 
 
+
+
 mysql = MySQL(app)
 
 from application import routes

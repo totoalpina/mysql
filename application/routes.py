@@ -5,7 +5,29 @@ from datetime import datetime
 import MySQLdb.cursors
 
 
+
 # FOLOSESC BAZE DE DATE SEPARATE PENTRU UTILIZATORI SI PENTRU DATE
+
+def adaugare_fisa(id_client):
+    cur = mysql.connection.cursor()
+    cur.execute("INSERT INTO cosmin.tarife SET id_client=%s", (id_client,))
+    mysql.connection.commit()
+    cur.close()
+
+def sterge_linkuri(id_data):
+    sql = """DELETE FROM 
+                        cosmin.linkuri 
+                 WHERE 
+                        id=%s
+              """
+    args = [id_data]
+    cur = mysql.connection.cursor()
+    cur.execute(sql, args)
+    mysql.connection.commit()
+    cur.close()
+
+def iesire_user():
+    session.pop('utilizator', None)
 
 
 
@@ -133,6 +155,113 @@ def administrare():
     else:
         flash('Aceasta sectiune este dedicata strict administratorilor !!!')
         return redirect(url_for('logare'))
+
+@app.route('/tarife/<int:id_data>', methods=['GET', 'POST'])
+def tarife(id_data):
+    logare = False
+    if 'utilizator' in session:  # verific daca utilizatoru este logat, in caz ca nu il redirectionez la pagina principala - ma folosesc de sesiune pentru a nu putea fi accesata decat daca userul este logat
+        logare = True
+        sql = """SELECT * FROM 
+                        cosmin.tarife
+                    WHERE 
+                            id_client = %s
+                  """
+        args = (id_data,)
+        cur = mysql.connection.cursor()
+        cur.execute(sql, args)
+        tarife = cur.fetchone()
+        # print('id =' + str(id_data))
+        print(tarife)
+        # mysql.connection.commit()
+        cur.close()
+        cur_2 = mysql.connection.cursor()
+        cur_2.execute("SELECT nume_domeniu FROM cosmin.parole WHERE id=%s", (id_data,))
+        nume_client  = cur_2.fetchone()
+        cur_2.close()
+        print(nume_client)
+        if tarife == None :
+            id_client = id_data
+            adaugare_fisa(id_client)
+            flash("Fisa a fost creata! Accesati butonul < Fisa > din nou pentru a vizualiza fisa ")
+            return redirect(url_for('index'))
+        else:
+            return render_template("tarife.html", tarife=tarife, nume_client=nume_client)
+
+@app.route('/adauga_suma_initiala', methods=['GET','POST'])
+def adauga_suma_initiala():
+    try:
+        if request.method == 'POST':
+            id = request.form['id']
+            id_data = request.form['id_data']
+            suma_incasata = request.form['suma_incasata']
+            tarif_initial = request.form['tarif_initial']
+            ramas_de_incasat = float(tarif_initial) - float(suma_incasata)
+            cur = mysql.connection.cursor()
+            cur.execute(""" 
+                           UPDATE 
+                           cosmin.tarife
+                           SET 
+                                tarif_initial=%s,
+                                ramas_de_incasat=%s
+                            
+                           WHERE 
+                                id=%s 
+                        """,
+                        (
+                            tarif_initial,
+                            ramas_de_incasat,
+                            id,
+                        )
+                        )
+            mysql.connection.commit()
+            cur.close()
+
+            flash("Tarif inregistrat cu succes")
+            return redirect(url_for('tarife', id_data=id_data))
+    except :
+        flash("Datele introduse sunt incorecte ! Reintroduceti datele ! Formularul accepta doar cifre !")
+        return redirect(url_for('tarife'))
+
+@app.route('/incaseaza', methods=['GET','POST'])
+def incaseaza():
+    try:
+        if request.method == 'POST':
+            id_data = request.form['id_data']
+            suma_incasata = request.form['suma_incasata']
+            id_update = request.form['id']
+            tarif_initial = request.form['tarif']
+            initial = request.form['suma_incasata_ianinte_de_plata']
+            v_ramas_de_plata = request.form['ramas_de_incasat']
+            update_incasat_totala = float(initial) + float(suma_incasata)      # ce se va duce in final la suma incasat dupa efectuarea noii plati
+            dp_ramas_de_plata = float(tarif_initial) - (float(suma_incasata) + float(initial))
+            print(dp_ramas_de_plata)
+            print(update_incasat_totala)
+            cur = mysql.connection.cursor()
+            cur.execute(""" 
+                           UPDATE 
+                           cosmin.tarife
+                           SET 
+                                incasare=%s, 
+                                ramas_de_incasat=%s
+                           WHERE 
+                                id=%s 
+                        """,
+                        (
+                            update_incasat_totala,
+                            dp_ramas_de_plata,
+                            id_update,
+                        )
+                        )
+            mysql.connection.commit()
+            cur.close()
+            flash("Plata a fost inregistrata")
+            return redirect(url_for('tarife', id_data=id_data))
+    except :
+        flash("Datele introduse sunt incorecte ! Reintroduceti datele ! Formularul accepta doar cifre !")
+        return redirect(url_for('tarife', id_data=id_data))
+
+
+
 
 @app.route('/cautare', methods=['GET', 'POST'])                         # functia de CAUTARE si randare pagina -  tabel PAROLE
 def cautare():
@@ -347,22 +476,13 @@ def userdelete(id_data):                                            # nu am nevo
 @app.route('/deletelink/<int:id_data>', methods=['GET', 'POST'])   # functia de stergere a datelor din baza de date
 def deletelink(id_data):                                            # nu am nevoie de verificarea de logare pentru ca folosesc modal si randarea paginii se face in alt mod
     flash("Stergerea a fost realizata cu succes !")
-    sql = """DELETE FROM 
-                    cosmin.linkuri 
-             WHERE 
-                    id=%s
-          """
-    args = [id_data]
-    cur = mysql.connection.cursor()
-    cur.execute(sql, args)
-    mysql.connection.commit()
-    cur.close()
+    sterge_linkuri(id_data)
     return redirect(url_for('linkuri'))
 
 
 @app.route('/logout')
 def logout():
-    session.pop('utilizator', None)                         # inchid sesiunea si sterg datele de cookie legate de aceasta
+    iesire_user()                        # inchid sesiunea si sterg datele de cookie legate de aceasta
     return redirect(url_for('home'))
 
 

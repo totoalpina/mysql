@@ -1,0 +1,206 @@
+{% extends "sablon.html" %}
+{% block title %}Afisare date{% endblock %}
+
+<link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+{% block content %}
+{#    <center>#}
+<div class="container">
+    <div class="row">
+            <div class="col md-12 ">
+                <h1 style="background-color: #444444; color: lightgray"> </h1>
+                <h1 style="background-color: #444444; color: lightgray"> </h1>
+                    <div class="d-flex justify-content-between" style="background-color: #444444; color: lightgray">
+                            <h4 style="background-color: #444444; color: lightgray; margin-left: 10px"> Fisa de calcul : {{ nume_client[0] }} </h4>
+{#                                    <div style="background-color: #444444; color: lightgray">#}
+{#                                            <form action="{{ url_for('cautare') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">#}
+{#                                                    <input class="form-control mr-sm-2" style="background-color: #444444; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">#}
+{#                                                    <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: #444444; color: lightgray" type="submit" >Cauta</button>#}
+{#                                            </form>#}
+{#                                    </div>#}
+                            <a href="/index" class="btn btn-success btn-xs float-right" style="background-color: #444444; color: lightgray; margin: 5px" onclick="return redirect(url_for('index'))">Inapoi la lista</a>
+{#                            <button type="button" class="btn btn-success btn-sm pull-right float-left" style="background-color: #444444; color: lightgray; margin: 5px" data-toggle="modal" data-target="#modal_suma_initiala">Adauga tarif</button>#}
+{#                            <button type="button" class="btn btn-success btn-sm pull-right float-right" style="background-color: #444444; color: lightgray; margin: 5px" data-toggle="modal" data-target="#modal_tarife">Incaseaza</button>#}
+                    </div>
+
+
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success alert-dismissable d-flex justify-content-around" role="alert">
+                                        <div class="justify-content-around">
+                                            {{message}}
+                                        </div>
+                                        <div class="justify-content-around">
+                                             <button type="button" class="close float-right" data-dismiss="alert" aria-label ="close">
+                                                 <span aria-hidden="true" class="float-right">&times;</span>
+                                             </button>
+                                        </div>
+
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+
+
+
+            {#    incepe tabelul   #}
+                    <table class="table table-bordered table-dark" style="color: lightgray">
+                        <thead>
+                            <tr>
+{#                                <th scope="col" style="text-align: center" t>id</th>#}
+                                <th scope="col" style="text-align: center">Tarif initial ( Lei )</th>
+                                <th scope="col" style="text-align: center">Suma incasata ( Lei )</th>
+                                <th scope="col" style="text-align: center">Rest de plata ( Lei )</th>
+{#                                <th scope="col" style="text-align: center">Descriere</th>#}
+                                <th scope="col" style="text-align: center" width="200px">Actiune</th>
+                            </tr>
+                        </thead>
+{#                        {% for row in tarife %}#}
+                        <tbody>
+{#                                <td scope='row'>{{ tarife[0] }}</td>#}
+                                <td scope='row' style="text-align: center">{{ tarife[2] }}</td>
+                                <td scope='row' style="text-align: center">{{ tarife[3] }}</td>
+                                <td scope='row' style="text-align: center">{{ tarife[4] }}</td>
+{#                                <td scope='row'>{{ row.4 }}</td>#}
+                                <td scope='row'>
+                                    <div class="d-flex justify-content-center">
+                                            <a href="/incasare/{{ tarife[0] }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modal_tarife{{ tarife[0] }}" >Incasare</a>
+                                            <a href="/adauga_suma_initiala/{{ tarife[0] }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modal_suma_initiala{{ tarife[0] }}" >Adauga tarif</a>
+{#                                            <a href="/delete/{{ tarife['id'] }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>#}
+                                    </div>
+
+                                </td>
+                {# Modal Tarife #}
+                                         <div id="modal_tarife{{ tarife[0] }}" class="modal fade" style="background-color: #444444; color: lightgray" role="dialog">
+                                           <div class="modal-dialog" style="background-color: #444444; color: lightgray">
+                                              <div class="modal-content" style="background-color: #444444; color: lightgray">
+                                                 <div class="modal-header" style="background-color: #444444; color: lightgray">
+                                                     <h4 class="modal-title">Incaseaza plata</h4>
+                                                 </div>
+                                                 <div class="modal-body" style="background-color: #444444; color: lightgray">
+                                                    <form action="{{ url_for('incaseaza') }}" method="POST" style="background-color: #444444; color: lightgray">
+                                                       <div class="form-group" style="background-color: #444444; color: lightgray">
+                                                          <label style="background-color: #444444; color: lightgray">Tastati suma ce va fi incasata  ( Lei ) :</label>
+                                                          <input type="hidden" style="background-color: #444444; color: lightgray" name="id" value="{{ tarife[0] }}">
+                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="id_data" value="{{ tarife[1] }}">
+                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="tarif" value="{{ tarife[2] }}">
+                                                          <input type="hidden" style="background-color: #444444; color: lightgray" name="suma_incasata_ianinte_de_plata" value="{{ tarife[3] }}">
+                                                          <input type="hidden" style="background-color: #444444; color: lightgray" name="ramas_de_incasat" value="{{ tarife[4] }}">
+                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="suma_incasata" value="">
+                                                       </div>
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label style="background-color: #444444; color: lightgray">Utilizator :</label>#}
+{#                                                          <input type="text" class="form-control" style="background-color: #555555; color: lightgray" name="utilizator" value="{{ row.2 }}">#}
+{#                                                       </div>#}
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label>Parola :</label>#}
+{#                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="parola" value="{{ row.3 }}">#}
+{#                                                       </div>#}
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label style="background-color: #444444; color: lightgray">Descriere :</label>#}
+{#                                                          <input type="textarea" style="background-color: #555555; color: lightgray" class="form-control" rows="3" name="descriere" value="{{ row.4 }}">#}
+{#                                                       </div>#}
+                                                       <div class="form-group" style="background-color: #444444; color: lightgray">
+                                                          <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="sbumit">Salveaza modificarile</button>
+                                                       </div>
+                                                    </form>
+                                                 </div>
+                                                 <div class="modal-footer" style="background-color: #444444; color: lightgray">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #444444; color: lightgray" placeholder="Inchide">Inchide</button>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+
+                                    {#Modal TARIFE#}
+                                        <div id="modal_suma_initiala{{ tarife[0] }}" class="modal fade" style="background-color: #444444; color: lightgray" role="dialog">
+                                           <div class="modal-dialog" style="background-color: #444444; color: lightgray">
+                                              <div class="modal-content" style="background-color: #444444; color: lightgray">
+                                                 <div class="modal-header" style="background-color: #444444; color: lightgray">
+                                                     <h4 class="modal-title">Incaseaza plata</h4>
+                                                 </div>
+                                                 <div class="modal-body" style="background-color: #444444; color: lightgray">
+                                                    <form action="{{ url_for('adauga_suma_initiala') }}" method="POST" style="background-color: #444444; color: lightgray">
+                                                       <div class="form-group" style="background-color: #444444; color: lightgray">
+                                                          <label style="background-color: #444444; color: lightgray">Introduceti tarif initial  ( Lei ) :</label>
+                                                          <input type="hidden" style="background-color: #444444; color: lightgray" name="id" value="{{ tarife[0] }}">
+                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="id_data" value="{{ tarife[1] }}">
+                                                           <input type="hidden" style="background-color: #444444; color: lightgray" name="suma_incasata" value="{{ tarife[3] }}">
+                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="tarif_initial" value="">
+                                                       </div>
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label style="background-color: #444444; color: lightgray">Utilizator :</label>#}
+{#                                                          <input type="text" class="form-control" style="background-color: #555555; color: lightgray" name="utilizator" value="{{ row.2 }}">#}
+{#                                                       </div>#}
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label>Parola :</label>#}
+{#                                                          <input type="text" style="background-color: #555555; color: lightgray" class="form-control" name="parola" value="{{ row.3 }}">#}
+{#                                                       </div>#}
+{#                                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                                          <label style="background-color: #444444; color: lightgray">Descriere :</label>#}
+{#                                                          <input type="textarea" style="background-color: #555555; color: lightgray" class="form-control" rows="3" name="descriere" value="{{ row.4 }}">#}
+{#                                                       </div>#}
+                                                       <div class="form-group" style="background-color: #444444; color: lightgray">
+                                                          <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="sbumit">Salveaza modificarile</button>
+                                                       </div>
+                                                    </form>
+                                                 </div>
+                                                 <div class="modal-footer" style="background-color: #444444; color: lightgray">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #444444; color: lightgray" placeholder="Inchide">Inchide</button>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                        </tbody>
+{#                        {% endfor %}#}
+                    </table>
+            </div>
+
+
+{#    incepe modal ADAUGA #}
+{#            <div id="myModal" style="background-color: #444444; color: lightgray" class="modal fade" role="dialog">#}
+{#                   <div class="modal-dialog" style="background-color: #444444; color: lightgray">#}
+{#                          <div class="modal-content" style="background-color: #444444; color: lightgray">#}
+{#                                <div class="modal-header" style="background-color: #444444; color: lightgray">#}
+{#                                    <h4 class="modal-title" style="background-color: #444444; color: lightgray">Introduceti informatiile</h4>#}
+{#                                </div>#}
+{#                                <div class="modal-body" style="background-color: #444444; color: lightgray">#}
+{#                                    <form action=" {{ url_for('adauga') }}" method="POST" style="background-color: #444444; color: lightgray">#}
+{#                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                              <label style="background-color: #444444; color: lightgray">Nume Domeniu :</label>#}
+{#                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="nume_domeniu" required="1">#}
+{#                                       </div>#}
+{#                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                              <label style="background-color: #444444; color: lightgray">Utilizator :</label>#}
+{#                                              <input type="text" class="form-control" style="background-color: #444444; color: lightgray" name="utilizator" required="1">#}
+{#                                       </div>#}
+{#                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                              <label style="background-color: #444444; color: lightgray">Parola :</label>#}
+{#                                              <input type="text" style="background-color: #444444; color: lightgray" class="form-control" name="parola" required="1">#}
+{#                                       </div>#}
+{#                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                              <label style="background-color: #444444; color: lightgray">Descriere :</label>#}
+{#                                              <input type="textarea" style="background-color: #444444; color: lightgray" class="form-control" rows="3" name="descriere" required="1">#}
+{#                                       </div>#}
+{#                                       <div class="form-group" style="background-color: #444444; color: lightgray">#}
+{#                                              <button class="btn btn-primary" style="background-color: #444444; color: lightgray" type="submit">Inregistreaza</button>#}
+{#                                       </div>#}
+{#                                    </form>#}
+{#                                </div>#}
+{#                                <div class="modal-footer">#}
+{#                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #444444; color: lightgray">Inchide</button>#}
+{#                                </div>#}
+{#                          </div>#}
+{#                   </div>#}
+{#            </div>#}
+    </div>
+</div>
+
+
+
+{#    </center>>#}
+{% endblock %}
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+
+<script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
