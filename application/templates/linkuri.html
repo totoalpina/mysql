@@ -1,7 +1,7 @@
 {% extends "sablon.html" %}
 {% block title %}Afisare linkuri{% endblock %}
 
-<link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+
 {% block content %}
 {#    <center>#}
 <div class="container">
@@ -13,7 +13,7 @@
                             <h4 style="background-color: #444444; color: lightgray; margin-left: 10px"> Lista de informatii </h4>
                                     <div style="background-color: #444444; color: lightgray">
                                             <form action="{{ url_for('cautare_linkuri') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
-                                                    <input class="form-control mr-sm-2" style="background-color: #444444; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
+                                                    <input class="form-control mr-sm-2" style="background-color: #555555; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
                                                     <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: #444444; color: lightgray" type="submit" >Cauta</button>
                                             </form>
                                     </div>
@@ -43,7 +43,7 @@
 
 
             {#    incepe tabelul   #}
-                    <table class="table table-bordered table-dark" style="color: lightgray">
+                    <table id="proba" class="table table-bordered table-dark" style="background-color: #444444; color: lightgray">
                         <thead>
                             <tr>
 {#                                <th scope="col" style="text-align: center" t>id</th>#}
@@ -55,13 +55,13 @@
                             </tr>
                         </thead>
                         {% for row in linkuri %}
-                        <tbody>
+                        <tbody id="proba" style="background-color: #444444; color: lightgray">
 {#                                <td scope='row'>{{ row.0 }}</td>#}
-                                <td scope='row'>{{ row.1 }}</td>
-                                <td scope='row'>{{ row.2 }}</td>
+                                <td scope='row' id="proba" style="background-color: #555555; color: lightgray">{{ row.1 }}</td>
+                                <td scope='row' id="proba" style="background-color: #555555; color: lightgray">{{ row.2 }}</td>
 {#                                <td scope='row'>{{ row.3 }}</td>#}
 {#                                <td scope='row'>{{ row.4 }}</td>#}
-                                <td scope='row'>
+                                <td scope='row' id="proba" style="background-color: #555555; color: lightgray">
                                     <div class="d-flex justify-content-center">
                                             <a href="/editeazalink/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaleditlink{{row.0}}" >Editare / Vizualizare</a>
                                             <a href="/deletelink/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>

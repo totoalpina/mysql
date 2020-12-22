@@ -1,7 +1,8 @@
 {% extends "sablon.html" %}
 {% block title %}Afisare date{% endblock %}
 
-<link href="{{url_for('static', filename = 'css/bootstrap.min.css')}}" rel="stylesheet">
+
+
 {% block content %}
 {#    <center>#}
 <div class="container">
@@ -45,7 +46,7 @@
 
 
             {#    incepe tabelul   #}
-                    <table class="table table-bordered table-dark" style="color: lightgray">
+                    <table class="table table-bordered table-dark" style="color: lightgrey" style="background-color: #444444; color: lightgray">
                         <thead>
                             <tr>
 {#                                <th scope="col" style="text-align: center" t>id</th>#}
@@ -59,11 +60,11 @@
 {#                        {% for row in tarife %}#}
                         <tbody>
 {#                                <td scope='row'>{{ tarife[0] }}</td>#}
-                                <td scope='row' style="text-align: center">{{ tarife[2] }}</td>
-                                <td scope='row' style="text-align: center">{{ tarife[3] }}</td>
-                                <td scope='row' style="text-align: center">{{ tarife[4] }}</td>
+                                <td scope='row' style="text-align: center" style="background-color: #555555; color: lightgray">{{ tarife[2] }}</td>
+                                <td scope='row' style="text-align: center" style="background-color: #555555; color: lightgray">{{ tarife[3] }}</td>
+                                <td scope='row' style="text-align: center" style="background-color: #555555; color: lightgray">{{ tarife[4] }}</td>
 {#                                <td scope='row'>{{ row.4 }}</td>#}
-                                <td scope='row'>
+                                <td scope='row' style="background-color: #555555; color: lightgray">
                                     <div class="d-flex justify-content-center">
                                             <a href="/incasare/{{ tarife[0] }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modal_tarife{{ tarife[0] }}" >Incasare</a>
                                             <a href="/adauga_suma_initiala/{{ tarife[0] }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modal_suma_initiala{{ tarife[0] }}" >Adauga tarif</a>

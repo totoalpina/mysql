@@ -13,7 +13,7 @@
                             <h4 style="background-color: #444444; color: lightgray"> Lista utilizatori </h4>
                                     <div style="background-color: #444444; color: lightgray">
                                             <form action="{{ url_for('cautare') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
-                                                    <input class="form-control mr-sm-2" style="background-color: #444444; color: lightgray; margin: 5px" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
+                                                    <input class="form-control mr-sm-2" style="background-color: #555555; color: lightgray; margin: 5px" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
                                                     <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: #444444; color: lightgray; margin: 5px" type="submit" >Cauta</button>
                                             </form>
                                     </div>
@@ -40,7 +40,7 @@
                     {%endwith%}
 
             {#    incepe tabelul   #}
-                    <table class="table table-bordered table-dark" style="color: lightgray">
+                    <table class="table table-bordered table-dark" style="background-color: #555555; color: lightgray">
                         <thead>
                             <tr>
 {#                                <th scope="col" style="text-align: center" t>id</th>#}
@@ -55,12 +55,12 @@
                         {% for row in data %}
                         <tbody>
 {#                                <td scope='row'>{{ row.0 }}</td>#}
-                                <td scope='row'>{{ row.1 }}</td>
-                                <td scope='row'>{{ row.3 }}</td>
-                                <td scope='row'>{{ row.5 }}</td>
-                                <td scope='row'>{{ row.8 }}</td>
-{#                                <td scope='row'>{{ row.9 }}</td>#}
-                                <td scope='row'>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.1 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.3 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.5 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.8 }}</td>
+{#                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.9 }}</td>#}
+                                <td scope='row' style="background-color: #555555; color: lightgray">
                                     <div class="d-flex justify-content-center">
                                             <a href="/admiedit/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaladminedit{{row.0}}" >Editare / Vizualizare</a>
                                             <a href="/userdelete/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>

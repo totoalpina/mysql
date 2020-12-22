@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col md-12 ">
                 <a href="/index" class="btn btn-success btn-xs float-right" style="background-color: #444444; color: lightgray" onclick="return redirect(url_for('index'))">Inapoi la lista</a>
-                <table class="table table-bordered table-dark" style="color: lightgray">
+                <table class="table table-bordered table-dark" style="color: lightgray" style="background-color: #444444; color: lightgray">
                         <thead>
                             <tr>
 {#                                <th scope="col" style="text-align: center">id</th>#}
@@ -20,11 +20,11 @@
                     {% for row in data %}
                         <tbody>
 {#                                <td scope='row'>{{ row.0 }}</td>#}
-                                <td scope='row'>{{ row.1 }}</td>
-                                <td scope='row'>{{ row.2 }}</td>
-                                <td scope='row'>{{ row.3 }}</td>
-                                <td scope='row'>{{ row.4 }}</td>
-                                <td scope='row'>
+                                <td scope='row' style="background-color: #444444; color: lightgray">{{ row.1 }}</td>
+                                <td scope='row' style="background-color: #444444; color: lightgray">{{ row.2 }}</td>
+                                <td scope='row' style="background-color: #444444; color: lightgray">{{ row.3 }}</td>
+                                <td scope='row' style="background-color: #444444; color: lightgray">{{ row.4 }}</td>
+                                <td scope='row' style="background-color: #444444; color: lightgray">
                                             <a href="/editeaza/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray" data-toggle="modal" data-target="#modaledit{{row.0}}" >Editare</a>
                                             <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>
 

@@ -197,15 +197,16 @@ def adauga_suma_initiala():
             tarif_initial = request.form['tarif_initial']
             ramas_de_incasat = float(tarif_initial) - float(suma_incasata)
             cur = mysql.connection.cursor()
-            cur.execute(""" 
-                           UPDATE 
+            # cur.execute("'UPDATE cosmin.tarife SET tarif_initial =' + tarif_initial + 'ramas_de_incasat =' + ramas_de_incasat + 'WHERE id=' + id ")
+            cur.execute("""
+                           UPDATE
                            cosmin.tarife
-                           SET 
+                           SET
                                 tarif_initial=%s,
                                 ramas_de_incasat=%s
-                            
-                           WHERE 
-                                id=%s 
+
+                           WHERE
+                                id=%s
                         """,
                         (
                             tarif_initial,

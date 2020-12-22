@@ -6,8 +6,8 @@
         <div class="row">
             <div class="col md-12 ">
                 <a href="/linkuri" class="btn btn-success btn-xs float-right" style="background-color: #444444; color: lightgray" onclick="return redirect(url_for('linkuri'))">Inapoi la lista</a>
-                <table class="table table-bordered table-dark" style="color: lightgray">
-                        <thead>
+                <table class="table table-bordered table-dark" style="color: lightgray" style="background-color: #444444; color: lightgray">
+                        <thead >
                             <tr>
 {#                                <th scope="col" style="text-align: center">id</th>#}
                                 <th scope="col" style="text-align: center">Topic</th>
@@ -19,14 +19,12 @@
                     {% for row in data %}
                         <tbody>
 {#                                <td scope='row'>{{ row.0 }}</td>#}
-                                <td scope='row'>{{ row.1 }}</td>
-                                <td scope='row'>{{ row.2 }}</td>
-                                <td scope='row'>{{ row.3 }}</td>
-                                <td scope='row'>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.1 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.2 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">{{ row.3 }}</td>
+                                <td scope='row' style="background-color: #555555; color: lightgray">
                                             <a href="/editeazalink/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray" data-toggle="modal" data-target="#modaleditlink{{row.0}}" >Editare</a>
                                             <a href="/deletelink/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>
-
-
                                 </td>
                 {# Modal EDITEAZA #}
                                  <div id="modaleditlink{{ row.0 }}" class="modal fade" style="background-color: #444444; color: lightgray" role="dialog">
