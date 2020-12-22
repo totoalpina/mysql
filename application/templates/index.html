@@ -14,10 +14,10 @@
                                     <div style="background-color: #444444; color: lightgray">
                                             <form action="{{ url_for('cautare') }}" method="POST" class="form-inline" style="background-color: #444444; color: lightgray">
                                                     <input class="form-control mr-sm-2" style="background-color: #555555; color: lightgray" type="text" name="cauta" placeholder="Cauta" aria-label="Cauta" value="">
-                                                    <button class="btn btn-outline-success my-2 my-sm-0" style="background-color: #444444; color: lightgray" type="submit" >Cauta</button>
+                                                    <button class="btn btn-outline-light my-2 my-sm-0" style="background-color: #444444; color: lightgray" type="submit" >Cauta</button>
                                             </form>
                                     </div>
-                            <button type="button" class="btn btn-success btn-sm pull-right float-right" style="background-color: #444444; color: lightgray; margin: 5px" data-toggle="modal" data-target="#myModal">Adauga informatii</button>
+                            <button type="button" class="btn btn-light btn-sm pull-right float-right" style="background-color: #444444; color: lightgray; margin: 5px" data-toggle="modal" data-target="#myModal">Adauga informatii</button>
                     </div>
 
 
@@ -63,9 +63,9 @@
 {#                                <td scope='row'>{{ row.4 }}</td>#}
                                 <td scope='row'style="background-color: #555555; color: lightgray">
                                     <div class="d-flex justify-content-center">
-                                            <a href="/editeaza/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaledit{{row.0}}" >Editare / Vizualizare</a>
+                                            <a href="/editeaza/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-right: 5px" data-toggle="modal" data-target="#modaledit{{row.0}}" >Edit / View</a>
                                             <a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px; margin-right: 5px" onclick="return confirm('Sunteti sigur(a) ca doriti stergerea datelor?')">Sterge</a>
-                                            <a href="/tarife/{{ row.0 }}" class="btn btn-warning btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px; margin-right: 5px" >Fisa</a>
+                                            <a href="/tarife/{{ row.0 }}" class="btn btn-info btn-xs" style="background-color: #444444; color: lightgray; margin-left: 5px; margin-right: 5px" >Fisa</a>
                                     </div>
 
                                 </td>
