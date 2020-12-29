@@ -337,7 +337,7 @@ def adminedit():                                                 # nu am nevoie 
         id_data = request.form['id']
         utilizator = request.form['utilizator']
         # parola = request.form['parola']
-        edit_secure_parola = generate_password_hash(request.form['parola'], method='sha256')
+        # edit_secure_parola = generate_password_hash(request.form['parola'], method='sha256')
         email = request.form['email']
         nume = request.form['nume']
         prenume = request.form['prenume']
@@ -348,11 +348,10 @@ def adminedit():                                                 # nu am nevoie 
                        UPDATE 
                        user.login
                        SET 
-                            utilizator=%s, 
-                            parola=%s, 
+                            utilizator=%s,  
                             email=%s, 
                             nume=%s,
-                            prenume,                        
+                            prenume=%s,                        
                             data_modificare=%s,
                             activ=%s
                        WHERE 
@@ -360,7 +359,6 @@ def adminedit():                                                 # nu am nevoie 
                     """,
                     (
                      utilizator,
-                     edit_secure_parola,
                      email,
                      nume,
                      prenume,
@@ -484,6 +482,7 @@ def deletelink(id_data):                                            # nu am nevo
 @app.route('/logout')
 def logout():
     iesire_user()                        # inchid sesiunea si sterg datele de cookie legate de aceasta
+    flash("Sesiune inchisa cu succes")
     return redirect(url_for('home'))
 
 

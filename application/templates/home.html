@@ -6,6 +6,23 @@
 <div class="container" style="width: 45%">
     <div class="row">
             <div class="col md-12 " >
+                {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success alert-dismissable d-flex justify-content-around" role="alert" style="background-color: #555555; color: lightgray; text-align: center">
+                                        <div class="justify-content-around" style="background-color: #555555; color: lightgray; text-align: center">
+                                            {{message}}
+                                        </div>
+                                        <div class="justify-content-around" style="background-color: #555555; color: lightgray; text-align: center">
+                                             <button type="button" class="close float-right" data-dismiss="alert" aria-label ="close" style="background-color: #555555; color: lightgray; text-align: center">
+                                                 <span aria-hidden="true" class="float-right" style="background-color: #555555; color: lightgray; text-align: center">&times;</span>
+                                             </button>
+                                        </div>
+
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
 
                 <h1 style="background-color: #444444; color: lightgray; text-align: center"><span style="background-color: #444444; color: #c69500; text-align: center">Accounts</span> <span style="background-color: #444444; color: #117a8b; text-align: center">MEMO</span></h1>
                     <br>

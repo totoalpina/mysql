@@ -24,13 +24,13 @@
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
                             {% for message in messages %}
-                                <div class="alert alert-success alert-dismissable d-flex justify-content-around" role="alert">
-                                        <div class="justify-content-around">
+                                <div class="alert alert-success alert-dismissable d-flex justify-content-around" role="alert" style="background-color: #555555; color: lightgray; text-align: center">
+                                        <div class="justify-content-around" style="background-color: #555555; color: lightgray; text-align: center">
                                             {{message}}
                                         </div>
-                                        <div class="justify-content-around">
-                                             <button type="button" class="close float-right" data-dismiss="alert" aria-label ="close">
-                                                 <span aria-hidden="true" class="float-right">&times;</span>
+                                        <div class="justify-content-around" style="background-color: #555555; color: lightgray; text-align: center">
+                                             <button type="button" class="close float-right" data-dismiss="alert" aria-label ="close" style="background-color: #555555; color: lightgray; text-align: center">
+                                                 <span aria-hidden="true" class="float-right" style="background-color: #555555; color: lightgray; text-align: center">&times;</span>
                                              </button>
                                         </div>
 
