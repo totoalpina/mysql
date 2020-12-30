@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request, redirect, flash, url_for, session
-from application import app, mysql
+from application import app, mysql, mail
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import MySQLdb.cursors
-
+from flask_mail import Message, Mail
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired
+import socket
 
 
 # FOLOSESC BAZE DE DATE SEPARATE PENTRU UTILIZATORI SI PENTRU DATE
+s = URLSafeTimedSerializer(app.secret_key)
 
 def adaugare_fisa(id_client):
     cur = mysql.connection.cursor()
@@ -29,13 +32,10 @@ def sterge_linkuri(id_data):
 def iesire_user():
     session.pop('utilizator', None)
 
-
-
 @app.route('/')
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
-
 
 @app.route('/logare', methods=['GET', 'POST'])
 def logare():
@@ -44,9 +44,10 @@ def logare():
         f_parola = request.form['parola']
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM user.login WHERE utilizator=%s", (f_utilizator,))
-        cont=cur.fetchone()                                                 # selectrez utilizatorul
+        cont=cur.fetchone()                                                # selectrez utilizatorul
+        activ= cont['activ']
         if cont:
-            if check_password_hash(cont['parola'], f_parola):
+            if check_password_hash(cont['parola'], f_parola) and (activ == 1 or activ == 2):
                 flash('Bine ai venit ' + cont['utilizator'])
                 session['utilizator'] = cont['utilizator']                    # stabilesc informatiile din sesiune, ma ajuta mai tarziu sa controlez accesul in paginile site-ului
                 session['activ'] = cont['activ']
@@ -60,10 +61,10 @@ def logare():
             #     session['activ'] = cont['activ']
             #     print('hgsf -' + str(session))
             #     return redirect(url_for('administrare'))
-        else:
-             flash("Utilizator si parola incorecte . Incercati din nou")
-    return render_template('logare.html')
+            else:
+                 flash("Contul este fie inactiv ( nu a fost confirmat ) fie utilizator si parola incorecte . Incercati din nou")
 
+    return render_template('logare.html')
 
 @app.route('/cont_nou', methods=['POST'])
 def cont_nou():
@@ -77,11 +78,11 @@ def cont_nou():
         email = request.form['email']
         secure_parola = generate_password_hash(request.form['parola'], method='sha256') # criptez parola pentru a o introduce in baza de date
         # print(secure_parola)                                      # verific daca a encriptat parola
-        activ = 1                                          # ar fi ideal sa gasesc o metoda de activare automata a contului(pe viitor)
+        # activ = 1                                          # ar fi ideal sa gasesc o metoda de activare automata a contului(pe viitor)
         data_modificare = datetime.now()
         data_adaugare = datetime.now()
-        sql = "INSERT INTO user.login (utilizator, parola, email, nume, prenume, data_modificare, data_adaugare, activ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        args = [utilizator, secure_parola, email, nume, prenume, data_modificare, data_adaugare, activ]
+        sql = "INSERT INTO user.login (utilizator, parola, email, nume, prenume, data_modificare, data_adaugare) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        args = [utilizator, secure_parola, email, nume, prenume, data_modificare, data_adaugare]
         if parola == confirma_parola:                       # daca parola este corecta in ambele campuri
             cur = mysql.connection.cursor()
             cur.execute(sql, args)
@@ -106,11 +107,35 @@ def cont_nou():
 
             mysql.connection.commit()
             cur.close()
-            flash("Operatorul a fost adaugat cu succes !")
+            token = s.dumps(email)
+
+            msg = Message('Confirmare Email', sender='totoalpina@gmail.com', recipients=[email])
+            link = url_for('confirmare_email', token=token, _external=True)
+            msg.body = """\n\n Va multumim pentru inregistrare ! Pentru a va activa contul creat pe site-ul nostru accesati linkul de mai jos. \n
+\n
+\n
+    Accesati acest link pentru activare cont: \n{}""".format(link)
+
+            mail.send(msg)
+            flash("Operatorul a fost adaugat cu succes ! Verificati casuta de email cu care v-ati creat contul pentru confirmarea inregistrarii !")
         else:
             flash('Datele din formularul de adaugare cont nu au fost conforme cu cerintele. PAROLA nu a putut fi confirmata. Reintroduceti datele in formularul de "Creaza cont nou" !')
         return redirect(url_for('logare'))
         # return redirect(url_for('cont_nou'))
+@app.route('/confirmare_email/<token>')
+def confirmare_email(token):
+    try:
+        email = s.loads(token, max_age=3600)
+        print('verificare' + email)
+        cur=mysql.connection.cursor()
+        cur.execute("UPDATE user.login SET activ=1 WHERE email=%s", (email,))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Contul a fost activat ! Folositi credentialele salvate in cont pentru a va loga in aplicatie !")
+    except SignatureExpired:
+        return '<h1>The token is expired!</h1>'
+    return redirect(url_for('logare'))
 
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -139,7 +164,6 @@ def linkuri():
         return render_template('linkuri.html', linkuri=linkuri)               # parole=data arunca in formularul din html informatiile din query
     else:
         return redirect(url_for('logare'))
-
 
 @app.route('/administrare', methods=['GET', 'POST'])
 def administrare():
@@ -260,8 +284,6 @@ def incaseaza():
     except :
         flash("Datele introduse sunt incorecte ! Reintroduceti datele ! Formularul accepta doar cifre !")
         return redirect(url_for('tarife', id_data=id_data))
-
-
 
 
 @app.route('/cautare', methods=['GET', 'POST'])                         # functia de CAUTARE si randare pagina -  tabel PAROLE
@@ -478,14 +500,11 @@ def deletelink(id_data):                                            # nu am nevo
     sterge_linkuri(id_data)
     return redirect(url_for('linkuri'))
 
-
 @app.route('/logout')
 def logout():
     iesire_user()                        # inchid sesiunea si sterg datele de cookie legate de aceasta
     flash("Sesiune inchisa cu succes")
     return redirect(url_for('home'))
-
-
 
 if __name__ == '__main__':
     app.run()
