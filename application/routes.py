@@ -111,10 +111,9 @@ def cont_nou():
 
             msg = Message('Confirmare Email', sender='totoalpina@gmail.com', recipients=[email])
             link = url_for('confirmare_email', token=token, _external=True)
-            msg.body = """\n\n Va multumim pentru inregistrare ! Pentru a va activa contul creat pe site-ul nostru accesati linkul de mai jos. \n
+            msg.body = """\n    Va multumim pentru inregistrare ! Pentru a va activa contul creat pe site-ul nostru accesati linkul de mai jos. \n
 \n
-\n
-    Accesati acest link pentru activare cont: \n{}""".format(link)
+    Accesati acest link pentru activare cont: \n    {}""".format(link)
 
             mail.send(msg)
             flash("Operatorul a fost adaugat cu succes ! Verificati casuta de email cu care v-ati creat contul pentru confirmarea inregistrarii !")
