@@ -7,13 +7,13 @@ import socket
 
 class Config(object):
    MYSQL_HOST = 'localhost'
-   MYSQL_USER = 'root'
-   MYSQL_PASSWORD = '783326'
+   MYSQL_USER = 
+   MYSQL_PASSWORD = 
    MYSQL_DB = ''
 
-   MAIL_SERVER = 'mail.zenic.ro'
-   MAIL_USERNAME = 'cosmin@zenic.ro'
-   MAIL_PASSWORD = 'Armand27Octombrie'
-   MAIL_PORT = 587
+   MAIL_SERVER = 
+   MAIL_USERNAME = 
+   MAIL_PASSWORD = 
+   MAIL_PORT = 
    MAIL_USE_TLS = True
 
